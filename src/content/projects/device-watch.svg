@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" width="480" height="600" font-family="ui-monospace, Consolas, Menlo, monospace" font-size="15" fill="#1f2328">
+  <title>DeviceWatch architecture</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#59636e"/>
+    </marker>
+  </defs>
+  <rect width="480" height="600" fill="#ffffff"/>
+
+  <!-- laptops -->
+  <rect x="96" y="24" width="288" height="76" rx="6" fill="#ffffff" stroke="#1f2328" stroke-width="1.5"/>
+  <rect x="104" y="16" width="288" height="76" rx="6" fill="none" stroke="#d1d9e0"/>
+  <text x="240" y="50" text-anchor="middle" font-weight="700">Laptop agent × N</text>
+  <text x="240" y="72" text-anchor="middle" font-size="13">Python stdlib · ~20 MB RAM</text>
+  <text x="240" y="90" text-anchor="middle" font-size="13" fill="#59636e">heartbeat every 15 min</text>
+
+  <path d="M210 100V150" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M270 150V100" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+  <text x="200" y="132" text-anchor="end" font-size="13" fill="#59636e">events</text>
+  <text x="280" y="132" font-size="13" fill="#59636e">commands</text>
+
+  <!-- ntfy -->
+  <rect x="140" y="154" width="200" height="56" rx="28" fill="#1f2328"/>
+  <text x="240" y="178" text-anchor="middle" fill="#ffffff" font-weight="700">ntfy server</text>
+  <text x="240" y="197" text-anchor="middle" fill="#d1d9e0" font-size="13">HTTP pub/sub</text>
+
+  <path d="M170 210L110 262" stroke="#59636e" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+  <path d="M310 210L370 262" stroke="#59636e" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+
+  <!-- phone -->
+  <rect x="16" y="266" width="208" height="86" rx="6" fill="#ffffff" stroke="#1f2328" stroke-width="1.5"/>
+  <text x="120" y="290" text-anchor="middle" font-weight="700">Phone apps</text>
+  <text x="120" y="312" text-anchor="middle" font-size="13">Android (Java)</text>
+  <text x="120" y="330" text-anchor="middle" font-size="13">iPhone web app</text>
+  <text x="120" y="346" text-anchor="middle" font-size="12" fill="#59636e">signed commands</text>
+  <path d="M120 352V386" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="40" y="390" width="160" height="40" rx="6" fill="#ffffff" stroke="#d1d9e0"/>
+  <text x="120" y="415" text-anchor="middle" font-size="14">Redmi Watch</text>
+
+  <!-- monitor -->
+  <rect x="256" y="266" width="208" height="86" rx="6" fill="#f6f8fa" stroke="#1a7f37" stroke-width="2"/>
+  <text x="360" y="290" text-anchor="middle" font-weight="700">Monitor</text>
+  <text x="360" y="310" text-anchor="middle" font-size="13">Docker · 48 MB cap</text>
+  <text x="360" y="328" text-anchor="middle" font-size="13">read-only, non-root</text>
+  <text x="360" y="346" text-anchor="middle" font-size="12" fill="#59636e">alert after 35 min silence</text>
+
+  <!-- CI -->
+  <rect x="16" y="460" width="448" height="124" rx="8" fill="#f6f8fa" stroke="#1a7f37" stroke-width="2"/>
+  <text x="32" y="486" font-weight="700" fill="#1a7f37">GitHub Actions · every push to main</text>
+  <rect x="32" y="500" width="132" height="68" rx="6" fill="#ffffff" stroke="#d1d9e0"/>
+  <text x="98" y="524" text-anchor="middle" font-size="13" font-weight="700">test</text>
+  <text x="98" y="542" text-anchor="middle" font-size="12">e2e + unit</text>
+  <text x="98" y="558" text-anchor="middle" font-size="12">30 MB RAM guard</text>
+  <rect x="174" y="500" width="132" height="68" rx="6" fill="#ffffff" stroke="#d1d9e0"/>
+  <text x="240" y="524" text-anchor="middle" font-size="13" font-weight="700">android</text>
+  <text x="240" y="542" text-anchor="middle" font-size="12">signed APK</text>
+  <text x="240" y="558" text-anchor="middle" font-size="12">→ Releases</text>
+  <rect x="316" y="500" width="132" height="68" rx="6" fill="#ffffff" stroke="#d1d9e0"/>
+  <text x="382" y="524" text-anchor="middle" font-size="13" font-weight="700">web</text>
+  <text x="382" y="542" text-anchor="middle" font-size="12">iPhone app</text>
+  <text x="382" y="558" text-anchor="middle" font-size="12">→ Pages</text>
+  <path d="M214 460L184 356" stroke="#1a7f37" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a)"/>
+  <text x="214" y="414" font-size="12" fill="#1a7f37">installs latest build</text>
+</svg>

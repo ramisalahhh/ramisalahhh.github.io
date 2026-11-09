@@ -1,14 +1,17 @@
 [
   {
     "title": "CI/CD pipeline for your project",
-    "text": "TODO: one line in your own words on what the client gets."
+    "text": "Every push tested and built automatically, and every merge to main deployed. A broken build never reaches your users.",
+    "proof": "ply-review"
   },
   {
     "title": "Dockerize your app and deploy it to the cloud",
-    "text": "TODO: one line in your own words on what the client gets."
+    "text": "Small, non-root images and one docker compose file, so your app runs the same on my laptop, your server and the cloud.",
+    "proof": "ply-review"
   },
   {
     "title": "Monitoring and alerts for a running service",
-    "text": "TODO: one line in your own words on what the client gets."
+    "text": "Health checks and alerts that reach your phone, so you hear about downtime before your customers do.",
+    "proof": "device-watch"
   }
 ]

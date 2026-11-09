@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 500" width="480" height="500" font-family="ui-monospace, Consolas, Menlo, monospace" font-size="15" fill="#1f2328">
+  <title>DevOps command reference deployment</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#59636e"/>
+    </marker>
+  </defs>
+  <rect width="480" height="500" fill="#ffffff"/>
+
+  <rect x="100" y="16" width="200" height="40" rx="6" fill="#1f2328"/>
+  <text x="200" y="41" text-anchor="middle" fill="#ffffff" font-weight="700">git push → main</text>
+  <path d="M200 56V84" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+
+  <rect x="16" y="88" width="448" height="252" rx="8" fill="#f6f8fa" stroke="#1a7f37" stroke-width="2"/>
+  <text x="32" y="114" font-weight="700" fill="#1a7f37">GitHub Actions · pages.yml</text>
+
+  <rect x="32" y="128" width="280" height="56" rx="6" fill="#ffffff" stroke="#1f2328" stroke-width="1.5"/>
+  <text x="172" y="151" text-anchor="middle" font-weight="700">check the page</text>
+  <text x="172" y="171" text-anchor="middle" font-size="13">not empty · title present</text>
+  <path d="M312 156H356" stroke="#cf222e" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="360" y="128" width="92" height="56" rx="6" fill="#ffebe9" stroke="#cf222e"/>
+  <text x="406" y="151" text-anchor="middle" font-size="13" font-weight="700" fill="#a40e26">✗ stop</text>
+  <text x="406" y="170" text-anchor="middle" font-size="11" fill="#a40e26">live page safe</text>
+
+  <path d="M172 184V206" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="32" y="210" width="280" height="44" rx="6" fill="#ffffff" stroke="#d1d9e0"/>
+  <text x="172" y="237" text-anchor="middle" font-size="14">upload site/ folder</text>
+  <path d="M172 254V276" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="32" y="280" width="280" height="44" rx="6" fill="#ffffff" stroke="#d1d9e0"/>
+  <text x="172" y="307" text-anchor="middle" font-size="14">deploy-pages</text>
+
+  <path d="M172 340V368" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="16" y="372" width="312" height="56" rx="6" fill="#ffffff" stroke="#1f2328" stroke-width="1.5"/>
+  <text x="172" y="396" text-anchor="middle" font-weight="700">GitHub Pages</text>
+  <text x="172" y="416" text-anchor="middle" font-size="13">one static HTML file, no build</text>
+  <path d="M172 428V448" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="16" y="452" width="312" height="40" rx="6" fill="#ffffff" stroke="#d1d9e0"/>
+  <text x="172" y="477" text-anchor="middle" font-size="14">reader: search · copy</text>
+</svg>

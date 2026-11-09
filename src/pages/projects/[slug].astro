@@ -1,6 +1,5 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import { Image } from 'astro:assets';
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Tags from '../../components/Tags.astro';
@@ -43,12 +42,14 @@ const { Content } = await render(project);
     <figure class="diagram">
       {
         diagram ? (
-          <Image src={diagram} alt={`Architecture diagram: ${title}`} widths={[480, 800, 1200]} sizes="(max-width: 44rem) 100vw, 44rem" />
+          <a href={diagram.src} class="diagram-link">
+            <img src={diagram.src} width={diagram.width} height={diagram.height} alt={`Architecture diagram: ${title}`} decoding="async" />
+          </a>
         ) : (
           <div class="todo">TODO: architecture diagram (add the file next to the Markdown and set "diagram:")</div>
         )
       }
-      <figcaption class="muted">Architecture</figcaption>
+      <figcaption class="muted">Architecture{diagram && ' · tap to open full size'}</figcaption>
     </figure>
 
     <div class="prose">

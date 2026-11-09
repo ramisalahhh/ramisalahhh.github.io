@@ -1,9 +1,29 @@
 {
-  "intro": "TODO: a short first-person paragraph about you.",
+  "intro": "I'm Rami, a DevOps engineer in Cairo and a Communications Engineering student at Ain Shams University, studying a DevOps diploma at Rowad Masr alongside my degree. I like taking software that only runs on one machine and making it build, test and ship itself: containers, CI/CD pipelines and small, reliable infrastructure. Outside DevOps I coach, play chess, train and speak, and make short videos.",
+  "now": [
+    "A team DevOps and Cloud project: a web app we're containerizing and shipping with a full CI/CD pipeline",
+    "Learning Kubernetes and Helm, Terraform, AWS fundamentals, and Prometheus with Grafana"
+  ],
   "cards": [
-    { "title": "Coaching", "text": "TODO: two lines about coaching.", "link": { "label": "TODO", "url": "" } },
-    { "title": "Chess", "text": "TODO: two lines about chess.", "link": { "label": "TODO", "url": "" } },
-    { "title": "Speaking and Training", "text": "TODO: two lines about speaking and training.", "link": { "label": "TODO", "url": "" } },
-    { "title": "Content", "text": "TODO: two lines about your content.", "link": { "label": "TODO", "url": "" } }
+    {
+      "title": "Coaching",
+      "text": "Online fitness coaching: gym and nutrition plans built for each client, plus short coaching videos on training and diet.",
+      "link": { "label": "Instagram @_ramisalah", "url": "https://www.instagram.com/_ramisalah/" }
+    },
+    {
+      "title": "Chess",
+      "text": "I play on chess.com and built Ply Review to analyse my own games with Stockfish, free in the browser.",
+      "link": { "label": "Try Ply Review", "url": "https://ramisalahhh.github.io/ply-review/" }
+    },
+    {
+      "title": "Speaking and Training",
+      "text": "Experienced trainer and public speaker. As a Program Manager I ran an online program for more than 100 students.",
+      "link": { "label": "LinkedIn", "url": "https://www.linkedin.com/in/ramy-salah-51bb1b212/" }
+    },
+    {
+      "title": "Content",
+      "text": "Short videos in Egyptian Arabic on training and nutrition. Calm, practical, no hype.",
+      "link": { "label": "TikTok @coach.ramisalah", "url": "https://www.tiktok.com/@coach.ramisalah" }
+    }
   ]
 }

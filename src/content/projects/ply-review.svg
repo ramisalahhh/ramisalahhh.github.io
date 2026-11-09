@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" width="480" height="560" font-family="ui-monospace, Consolas, Menlo, monospace" font-size="15" fill="#1f2328">
+  <title>Ply Review architecture</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#59636e"/>
+    </marker>
+  </defs>
+  <rect width="480" height="560" fill="#ffffff"/>
+
+  <!-- push -->
+  <rect x="140" y="16" width="200" height="40" rx="6" fill="#1f2328"/>
+  <text x="240" y="41" text-anchor="middle" fill="#ffffff" font-weight="700">git push → main</text>
+  <path d="M240 56V92" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- actions -->
+  <rect x="16" y="96" width="448" height="128" rx="8" fill="#f6f8fa" stroke="#1a7f37" stroke-width="2"/>
+  <text x="32" y="122" font-weight="700" fill="#1a7f37">GitHub Actions</text>
+  <rect x="32" y="136" width="196" height="74" rx="6" fill="#ffffff" stroke="#d1d9e0"/>
+  <text x="130" y="160" text-anchor="middle" font-weight="700">pages.yml</text>
+  <text x="130" y="182" text-anchor="middle" font-size="13">test → build</text>
+  <text x="130" y="200" text-anchor="middle" font-size="13">→ deploy</text>
+  <rect x="252" y="136" width="196" height="74" rx="6" fill="#ffffff" stroke="#d1d9e0"/>
+  <text x="350" y="160" text-anchor="middle" font-weight="700">ci.yml</text>
+  <text x="350" y="182" text-anchor="middle" font-size="13">py 3.11–3.13 · lint</text>
+  <text x="350" y="200" text-anchor="middle" font-size="13">→ 2 Docker images</text>
+
+  <path d="M130 224V258" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M350 224V258" stroke="#59636e" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#a)"/>
+
+  <!-- left: pages -->
+  <rect x="16" y="262" width="228" height="56" rx="6" fill="#ffffff" stroke="#1f2328" stroke-width="1.5"/>
+  <text x="130" y="286" text-anchor="middle" font-weight="700">GitHub Pages</text>
+  <text x="130" y="306" text-anchor="middle" font-size="13" fill="#59636e">static site, no server</text>
+  <path d="M130 318V352" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="16" y="356" width="228" height="96" rx="6" fill="#ffffff" stroke="#1f2328" stroke-width="1.5"/>
+  <text x="130" y="380" text-anchor="middle" font-weight="700">Visitor's browser</text>
+  <text x="130" y="404" text-anchor="middle" font-size="13">Stockfish 19 (WASM)</text>
+  <text x="130" y="422" text-anchor="middle" font-size="13">× Web Workers</text>
+  <text x="130" y="440" text-anchor="middle" font-size="13">reviews in IndexedDB</text>
+
+  <!-- right: self-hosted -->
+  <rect x="260" y="262" width="204" height="190" rx="8" fill="#f6f8fa" stroke="#1f2328" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="362" y="286" text-anchor="middle" font-weight="700">docker compose</text>
+  <text x="362" y="304" text-anchor="middle" font-size="13" fill="#59636e">self-hosted</text>
+  <rect x="274" y="316" width="176" height="48" rx="6" fill="#ffffff" stroke="#d1d9e0"/>
+  <text x="362" y="337" text-anchor="middle" font-weight="700">web</text>
+  <text x="362" y="355" text-anchor="middle" font-size="13">nginx · :8080</text>
+  <rect x="274" y="374" width="176" height="66" rx="6" fill="#ffffff" stroke="#d1d9e0"/>
+  <text x="362" y="395" text-anchor="middle" font-weight="700">api <tspan font-weight="400" font-size="12" fill="#59636e">(profile)</tspan></text>
+  <text x="362" y="413" text-anchor="middle" font-size="13">FastAPI + Stockfish</text>
+  <text x="362" y="430" text-anchor="middle" font-size="13">volume: SQLite, cache</text>
+
+  <!-- chess.com -->
+  <path d="M130 492V456" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M362 492V456" stroke="#59636e" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="16" y="496" width="448" height="48" rx="6" fill="#ffffff" stroke="#1f2328" stroke-width="1.5"/>
+  <text x="240" y="526" text-anchor="middle" font-weight="700">chess.com public API <tspan font-weight="400" font-size="13" fill="#59636e">(games)</tspan></text>
+</svg>

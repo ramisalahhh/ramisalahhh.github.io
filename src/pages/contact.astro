@@ -3,44 +3,55 @@ import Base from '../layouts/Base.astro';
 import site from '../data/site.json';
 import { isTodo } from '../lib/projects';
 
-const linkedinHandle = site.linkedin.replace(/\/$/, '').split('/').pop();
-const githubHandle = site.github.replace(/\/$/, '').split('/').pop();
+const handle = (url: string) => url.replace(/\/$/, '').split('/').pop();
+const hasEmail = !isTodo(site.email);
 ---
 
 <Base title="Contact" description="Contact Rami Salah on LinkedIn, GitHub or by email.">
   <section class="container narrow section">
     <h1>Contact</h1>
-    <p class="muted">Freelance work, junior DevOps roles and internships. Pick whichever is easiest.</p>
+    <p class="lede">{site.availability}. Tell me what your app runs on today and where it should run, and I'll reply with how I'd ship it.</p>
+    <p class="muted mono">{site.location} · LinkedIn is the fastest way to reach me.</p>
     <dl class="contact">
       <div>
         <dt>LinkedIn</dt>
-        <dd><a href={site.linkedin}>linkedin.com/in/{linkedinHandle}</a></dd>
+        <dd><a href={site.linkedin}>linkedin.com/in/{handle(site.linkedin)}</a></dd>
       </div>
       <div>
         <dt>GitHub</dt>
-        <dd><a href={site.github}>github.com/{githubHandle}</a></dd>
+        <dd><a href={site.github}>github.com/{handle(site.github)}</a></dd>
       </div>
-      <div>
-        <dt>Email</dt>
-        <dd>
-          {
-            isTodo(site.email) ? (
-              <span class="todo">TODO: contact email (src/data/site.json)</span>
-            ) : (
+      {
+        hasEmail && (
+          <div>
+            <dt>Email</dt>
+            <dd>
               <a href={`mailto:${site.email}`}>{site.email}</a>
-            )
-          }
-        </dd>
-      </div>
+            </dd>
+          </div>
+        )
+      }
     </dl>
   </section>
 </Base>
 
 <style>
+  .lede {
+    font-size: 1.125rem;
+  }
+  .mono {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+  }
   .contact {
     margin: 2rem 0 0;
     display: grid;
-    gap: 1.25rem;
+    gap: 0;
+    border-top: 1px solid var(--border);
+  }
+  .contact div {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
   }
   .contact dt {
     font-family: var(--mono);

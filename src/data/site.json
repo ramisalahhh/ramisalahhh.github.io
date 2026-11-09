@@ -1,9 +1,12 @@
 {
   "name": "Rami Salah",
   "headline": "DevOps engineer — I containerize, automate and ship",
+  "intro": "I turn apps that only run on one machine into containers with CI/CD pipelines that test, build and deploy on every push. Everything below is real, public and running.",
+  "location": "Cairo, Egypt (UTC+2)",
+  "availability": "Open to freelance work, junior DevOps roles and internships",
   "github": "https://github.com/ramisalahhh",
   "linkedin": "https://www.linkedin.com/in/ramy-salah-51bb1b212/",
-  "email": "TODO",
+  "email": "",
   "repo": "https://github.com/ramisalahhh/ramisalahhh.github.io",
   "workflowFile": "deploy.yml"
 }

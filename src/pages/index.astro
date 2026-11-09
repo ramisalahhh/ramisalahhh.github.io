@@ -5,25 +5,67 @@ import Tags from '../components/Tags.astro';
 import Text from '../components/Text.astro';
 import site from '../data/site.json';
 import services from '../data/services.json';
-import { getFeaturedProjects, getSkills, MAX_FEATURED } from '../lib/projects';
+import {
+  getDevopsProjects,
+  getFeaturedProjects,
+  getLabProjects,
+  getSkills,
+  MAX_FEATURED,
+} from '../lib/projects';
 
+const devops = await getDevopsProjects();
 const featured = await getFeaturedProjects();
+const lab = await getLabProjects();
 const skills = await getSkills();
 const emptySlots = MAX_FEATURED - featured.length;
+
+const toolCount = skills.reduce((n, g) => n + g.tools.length, 0);
+const liveCount = devops.filter((p) => p.data.live).length;
+const titleOf = (slug: string) => devops.find((p) => p.id === slug)?.data.title.split(':')[0];
 ---
 
 <Base>
   <section class="container hero">
-    <p class="eyebrow">{site.name}</p>
-    <h1>{site.headline}</h1>
-    <div class="buttons">
-      <a class="button primary" href="/projects/">Projects</a>
-      <a class="button secondary" href="/contact/">Contact</a>
+    <div class="hero-text">
+      <p class="eyebrow">{site.name} · {site.location}</p>
+      <h1>{site.headline}</h1>
+      <p class="intro">{site.intro}</p>
+      <div class="buttons">
+        <a class="button primary" href="/projects/">Projects</a>
+        <a class="button secondary" href="/contact/">Contact</a>
+      </div>
+      <p class="status"><span class="dot" aria-hidden="true"></span>{site.availability}</p>
+    </div>
+
+    <div class="terminal" role="img" aria-label={`Terminal showing ${devops.length} DevOps projects`}>
+      <div class="term-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+      <pre aria-hidden="true"><span class="p">$</span> whoami
+rami-salah · devops engineer
+
+<span class="p">$</span> ls ~/projects
+{devops.map((p) => `${p.id}/`).join('\n')}
+
+<span class="p">$</span> git push origin main
+<span class="ok">✓</span> tests passed
+<span class="ok">✓</span> images built
+<span class="ok">✓</span> deployed</pre>
     </div>
   </section>
 
+  <section class="container" aria-label="At a glance">
+    <ul class="stats">
+      <li><strong>{devops.length}</strong><span>DevOps projects</span></li>
+      <li><strong>{toolCount}</strong><span>tools in use</span></li>
+      <li><strong>{liveCount}</strong><span>live today</span></li>
+      <li><strong>{lab.length}</strong><span>lab tools</span></li>
+    </ul>
+  </section>
+
   <section class="container section" aria-labelledby="featured-heading">
-    <h2 id="featured-heading">Featured projects</h2>
+    <div class="section-head">
+      <h2 id="featured-heading">Featured projects</h2>
+      <a href="/projects/">All projects →</a>
+    </div>
     <ul class="grid">
       {featured.map((p) => <ProjectCard project={p} />)}
       {
@@ -38,7 +80,7 @@ const emptySlots = MAX_FEATURED - featured.length;
 
   <section class="container section" aria-labelledby="skills-heading">
     <h2 id="skills-heading">Skills</h2>
-    <p class="muted small">Every tool here is used in at least one project on this site.</p>
+    <p class="muted small">Only tools I've used in a project on this site. Each one is backed by a case study.</p>
     <dl class="skills">
       {
         skills.map(({ group, tools }) => (
@@ -55,28 +97,169 @@ const emptySlots = MAX_FEATURED - featured.length;
 
   <section class="container section" aria-labelledby="services-heading">
     <h2 id="services-heading">What I can do for you</h2>
-    <ul class="grid">
+    <ul class="grid services">
       {
-        services.map((s) => (
+        services.map((s, i) => (
           <li class="card">
+            <p class="num" aria-hidden="true">0{i + 1}</p>
             <h3>{s.title}</h3>
             <Text value={s.text} as="p" />
+            {s.proof && titleOf(s.proof) && (
+              <p class="proof">
+                See it in <a href={`/projects/${s.proof}/`}>{titleOf(s.proof)}</a>
+              </p>
+            )}
           </li>
         ))
       }
     </ul>
-    <p class="cta"><a href="/contact/">Get in touch →</a></p>
+    <div class="cta-box">
+      <p><strong>Have a project that needs shipping?</strong> Tell me what it runs on and where it should live.</p>
+      <a class="button primary" href="/contact/">Get in touch</a>
+    </div>
   </section>
+
+  {
+    lab.length > 0 && (
+      <section class="container section" aria-labelledby="lab-heading">
+        <div class="section-head">
+          <h2 id="lab-heading">From the lab</h2>
+          <a href="/lab/">All lab tools →</a>
+        </div>
+        <p class="muted small">Small tools I build to solve my own problems.</p>
+        <ul class="lab-list">
+          {lab.map((p) => (
+            <li>
+              <a href={p.data.repo}>{p.data.title}</a>
+              <span class="muted"> · {p.data.summary.split('.')[0]}.</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
 </Base>
 
 <style>
   .hero {
-    padding-top: 3.5rem;
-    padding-bottom: 1.5rem;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media (min-width: 56rem) {
+    .hero {
+      grid-template-columns: 1.25fr 1fr;
+      padding-top: 4.5rem;
+    }
   }
   .hero h1 {
     max-width: 22ch;
+    margin-bottom: 1rem;
+  }
+  .intro {
+    font-size: 1.125rem;
+    color: var(--muted);
+    max-width: 38rem;
     margin-bottom: 1.5rem;
+  }
+  .status {
+    margin: 1.25rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--accent);
+    flex: none;
+  }
+
+  .terminal {
+    background: #010409;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    min-width: 0;
+  }
+  .term-bar {
+    display: flex;
+    gap: 6px;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid #21262d;
+  }
+  .term-bar span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #30363d;
+  }
+  .terminal pre {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: #010409 !important;
+    color: #e6edf3;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    padding: 1rem 1.1rem 1.2rem;
+  }
+  .terminal .p {
+    color: #3fb950;
+  }
+  .terminal .ok {
+    color: #3fb950;
+  }
+
+  .stats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--border);
+    overflow: hidden;
+  }
+  @media (min-width: 40rem) {
+    .stats {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .stats li {
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+  }
+  .stats strong {
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+  .stats span {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .section-head a {
+    font-family: var(--mono);
+    font-size: 0.9rem;
   }
   .small {
     font-size: 0.95rem;
@@ -84,13 +267,16 @@ const emptySlots = MAX_FEATURED - featured.length;
   .skills {
     margin: 0;
     display: grid;
-    gap: 0.75rem;
+    gap: 0;
+    border-top: 1px solid var(--border);
   }
   .skill-row {
     display: grid;
     grid-template-columns: 11rem 1fr;
     gap: 0.5rem 1rem;
     align-items: baseline;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
   }
   .skill-row dt {
     font-family: var(--mono);
@@ -105,8 +291,46 @@ const emptySlots = MAX_FEATURED - featured.length;
       grid-template-columns: 1fr;
     }
   }
-  .cta {
-    margin-top: 1.25rem;
+
+  .services h3 {
+    font-size: 1.05rem;
+  }
+  .num {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: 0.85rem;
+  }
+  .proof {
+    margin-top: auto !important;
+    padding-top: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .cta-box {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cta-box p {
+    margin: 0;
+    max-width: 36rem;
+  }
+
+  .lab-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .lab-list a {
     font-family: var(--mono);
   }
 </style>
