@@ -1,0 +1,14 @@
+---
+// Renders a text value; anything still starting with "TODO" is highlighted so it can't slip through.
+import { isTodo } from '../lib/projects';
+
+interface Props {
+  value: string | null | undefined;
+  as?: 'p' | 'span';
+  class?: string;
+}
+const { value, as: Tag = 'span', class: className } = Astro.props;
+const todo = isTodo(value);
+---
+
+<Tag class:list={[className, { todo }]}>{todo ? value || 'TODO' : value}</Tag>

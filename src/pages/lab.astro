@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import { getLabProjects } from '../lib/projects';
+
+const lab = await getLabProjects();
+---
+
+<Base title="Lab" description="Small apps Rami Salah builds to solve his own problems.">
+  <section class="container section">
+    <h1>Lab</h1>
+    <p class="muted">Small apps I build to solve my own problems.</p>
+    {
+      lab.length === 0 ? (
+        <p class="todo">TODO: add one file per app in src/content/projects/ with "type: lab".</p>
+      ) : (
+        <ul class="grid">
+          {lab.map((p) => (
+            <li class="card">
+              <h2 class="lab-title">{p.data.title}</h2>
+              {p.data.problem && <p class="muted">{p.data.problem}</p>}
+              <p>{p.data.summary}</p>
+              <p class="repo">
+                <a href={p.data.repo}>Repository</a>
+              </p>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .lab-title {
+    font-size: 1.05rem;
+    margin: 0;
+  }
+  .repo {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    margin-top: auto !important;
+  }
+</style>

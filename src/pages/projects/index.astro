@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getDevopsProjects } from '../../lib/projects';
+
+const projects = await getDevopsProjects();
+---
+
+<Base title="Projects" description="DevOps projects by Rami Salah: what was built, how it runs and what broke.">
+  <section class="container section">
+    <h1>Projects</h1>
+    <p class="muted">Each one has a case study: the problem, the architecture, the tools and what broke.</p>
+    <ul class="grid">
+      {projects.map((p) => <ProjectCard project={p} headingLevel="h2" />)}
+    </ul>
+  </section>
+</Base>

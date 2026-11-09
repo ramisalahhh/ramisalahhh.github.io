@@ -1,0 +1,69 @@
+---
+import Base from '../layouts/Base.astro';
+import Text from '../components/Text.astro';
+import about from '../data/about.json';
+import certifications from '../data/certifications.json';
+import { isTodo } from '../lib/projects';
+---
+
+<Base title="About" description="About Rami Salah: DevOps engineer, coach, chess player, trainer and creator.">
+  <section class="container section">
+    <h1>About</h1>
+    <Text value={about.intro} as="p" class="intro" />
+
+    <ul class="grid sides">
+      {
+        about.cards.map((c) => (
+          <li class="card">
+            <h2 class="side-title">{c.title}</h2>
+            <Text value={c.text} as="p" />
+            <p class="link">
+              {c.link.url && !isTodo(c.link.label) ? (
+                <a href={c.link.url}>{c.link.label} →</a>
+              ) : (
+                <span class="todo">TODO: link</span>
+              )}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2>Certifications</h2>
+    {
+      certifications.length === 0 ? (
+        <p class="todo">TODO: add certifications to src/data/certifications.json</p>
+      ) : (
+        <ul class="certs">
+          {(certifications as { name: string; issuer?: string; year?: string | number; url?: string }[]).map((c) => (
+            <li>
+              {c.url ? <a href={c.url}>{c.name}</a> : c.name}
+              {(c.issuer || c.year) && (
+                <span class="muted"> · {[c.issuer, c.year].filter(Boolean).join(', ')}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .intro {
+    max-width: var(--narrow);
+    margin-bottom: 2rem;
+  }
+  .side-title {
+    font-size: 1.05rem;
+    margin: 0;
+  }
+  .link {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    margin-top: auto !important;
+  }
+  .certs {
+    padding-left: 1.25rem;
+  }
+</style>

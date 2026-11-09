@@ -1,0 +1,14 @@
+[
+  {
+    "title": "CI/CD pipeline for your project",
+    "text": "TODO: one line in your own words on what the client gets."
+  },
+  {
+    "title": "Dockerize your app and deploy it to the cloud",
+    "text": "TODO: one line in your own words on what the client gets."
+  },
+  {
+    "title": "Monitoring and alerts for a running service",
+    "text": "TODO: one line in your own words on what the client gets."
+  }
+]

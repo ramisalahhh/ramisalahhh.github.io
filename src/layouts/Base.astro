@@ -1,0 +1,213 @@
+---
+import '../styles/global.css';
+import site from '../data/site.json';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description = `${site.name}: DevOps engineer. Containerize, automate and ship.` } = Astro.props;
+const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · DevOps engineer`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const nav = [
+  { href: '/projects/', label: 'Projects' },
+  { href: '/lab/', label: 'Lab' },
+  { href: '/about/', label: 'About' },
+  { href: '/contact/', label: 'Contact' },
+];
+const path = Astro.url.pathname.replace(/\/?$/, '/');
+const isCurrent = (href: string) => path === href || path.startsWith(href);
+
+// In GitHub Actions the build knows which run produced it; locally we link to the workflow's run list.
+const runId = process.env.GITHUB_RUN_ID;
+const runUrl = runId
+  ? `${site.repo}/actions/runs/${runId}`
+  : `${site.repo}/actions/workflows/${site.workflowFile}`;
+const sha = process.env.GITHUB_SHA?.slice(0, 7);
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <script is:inline>
+      // Apply the saved theme before first paint. Dark unless the visitor chose light.
+      try {
+        if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light';
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="container bar">
+        <a class="brand" href="/">rami<span>@</span>salah</a>
+        <nav aria-label="Main">
+          <ul>
+            {
+              nav.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="Switch to light theme" data-theme-toggle>
+          <span aria-hidden="true" class="icon"></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>
+          Built with <a href="https://astro.build">Astro</a>, deployed by
+          <a href={runUrl}>GitHub Actions</a>{sha && <span class="muted"> ({sha})</span>}.
+          <a href={site.repo}>Source on GitHub</a>.
+        </p>
+        <p class="muted">
+          <a href={site.github}>GitHub</a> · <a href={site.linkedin}>LinkedIn</a>
+        </p>
+      </div>
+    </footer>
+
+    <script is:inline>
+      (function () {
+        var btn = document.querySelector('[data-theme-toggle]');
+        if (!btn) return;
+        var root = document.documentElement;
+        function sync() {
+          var light = root.dataset.theme === 'light';
+          btn.setAttribute('aria-label', light ? 'Switch to dark theme' : 'Switch to light theme');
+          btn.setAttribute('aria-pressed', String(light));
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', light ? '#ffffff' : '#0d1117');
+        }
+        btn.addEventListener('click', function () {
+          root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+          try {
+            localStorage.setItem('theme', root.dataset.theme);
+          } catch (e) {}
+          sync();
+        });
+        sync();
+      })();
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--accent);
+    color: var(--accent-text);
+    padding: 0.5rem 1rem;
+    z-index: 10;
+  }
+  .skip:focus {
+    left: 1rem;
+  }
+  .site-header {
+    border-bottom: 1px solid var(--border);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  .brand {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    margin-right: auto;
+  }
+  .brand span {
+    color: var(--accent);
+  }
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    color: var(--muted);
+    text-decoration: none;
+    display: inline-block;
+    padding: 0.5rem 0;
+  }
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--text);
+  }
+  nav a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+  }
+  .theme-toggle {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  /* Half-filled circle icon, drawn in CSS so no image request is needed. */
+  .icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+  }
+  .site-footer {
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    padding: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+  .site-footer p {
+    margin: 0.25rem 0;
+  }
+  @media (max-width: 30rem) {
+    .bar {
+      gap: 0.25rem 0.75rem;
+    }
+    nav {
+      order: 3;
+      width: 100%;
+    }
+  }
+</style>

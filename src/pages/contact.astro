@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import site from '../data/site.json';
+import { isTodo } from '../lib/projects';
+
+const linkedinHandle = site.linkedin.replace(/\/$/, '').split('/').pop();
+const githubHandle = site.github.replace(/\/$/, '').split('/').pop();
+---
+
+<Base title="Contact" description="Contact Rami Salah on LinkedIn, GitHub or by email.">
+  <section class="container narrow section">
+    <h1>Contact</h1>
+    <p class="muted">Freelance work, junior DevOps roles and internships. Pick whichever is easiest.</p>
+    <dl class="contact">
+      <div>
+        <dt>LinkedIn</dt>
+        <dd><a href={site.linkedin}>linkedin.com/in/{linkedinHandle}</a></dd>
+      </div>
+      <div>
+        <dt>GitHub</dt>
+        <dd><a href={site.github}>github.com/{githubHandle}</a></dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd>
+          {
+            isTodo(site.email) ? (
+              <span class="todo">TODO: contact email (src/data/site.json)</span>
+            ) : (
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            )
+          }
+        </dd>
+      </div>
+    </dl>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    margin: 2rem 0 0;
+    display: grid;
+    gap: 1.25rem;
+  }
+  .contact dt {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .contact dd {
+    margin: 0;
+    font-size: 1.15rem;
+    overflow-wrap: anywhere;
+  }
+</style>

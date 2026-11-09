@@ -1,0 +1,8 @@
+{
+  "Containers": ["Docker", "Docker Compose", "Kubernetes", "Helm", "Podman"],
+  "CI/CD": ["GitHub Actions", "GitHub Pages", "Jenkins", "GitLab CI", "Argo CD"],
+  "Cloud": ["AWS", "S3", "CloudFront", "EC2", "Azure", "GCP"],
+  "IaC": ["Terraform", "Ansible", "CloudFormation"],
+  "Monitoring": ["Prometheus", "Grafana", "Alertmanager", "Loki"],
+  "Linux and scripting": ["Linux", "Bash", "Python", "Nginx", "Git"]
+}

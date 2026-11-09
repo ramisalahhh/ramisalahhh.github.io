@@ -1,0 +1,9 @@
+{
+  "intro": "TODO: a short first-person paragraph about you.",
+  "cards": [
+    { "title": "Coaching", "text": "TODO: two lines about coaching.", "link": { "label": "TODO", "url": "" } },
+    { "title": "Chess", "text": "TODO: two lines about chess.", "link": { "label": "TODO", "url": "" } },
+    { "title": "Speaking and Training", "text": "TODO: two lines about speaking and training.", "link": { "label": "TODO", "url": "" } },
+    { "title": "Content", "text": "TODO: two lines about your content.", "link": { "label": "TODO", "url": "" } }
+  ]
+}

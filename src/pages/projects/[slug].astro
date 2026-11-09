@@ -1,0 +1,101 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Tags from '../../components/Tags.astro';
+import { getDevopsProjects, formatDate, type DevopsProject } from '../../lib/projects';
+
+// Only devops projects get a case-study page; lab entries live on /lab.
+export const getStaticPaths = (async () => {
+  const projects = await getDevopsProjects();
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}) satisfies GetStaticPaths;
+
+const { project } = Astro.props as { project: DevopsProject };
+const { title, summary, tools, repo, live, diagram, date } = project.data;
+const { Content } = await render(project);
+---
+
+<Base title={title} description={summary}>
+  <article class="container narrow section">
+    <p class="eyebrow"><a href="/projects/">← Projects</a></p>
+    <h1>{title}</h1>
+    <p class="lede">{summary}</p>
+
+    <div class="meta">
+      <Tags tools={tools} />
+      <p class="links">
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        <span aria-hidden="true">·</span>
+        <a href={repo}>Repository</a>
+        {
+          live && (
+            <>
+              <span aria-hidden="true">·</span>
+              <a href={live}>Live site</a>
+            </>
+          )
+        }
+      </p>
+    </div>
+
+    <figure class="diagram">
+      {
+        diagram ? (
+          <Image src={diagram} alt={`Architecture diagram: ${title}`} widths={[480, 800, 1200]} sizes="(max-width: 44rem) 100vw, 44rem" />
+        ) : (
+          <div class="todo">TODO: architecture diagram (add the file next to the Markdown and set "diagram:")</div>
+        )
+      }
+      <figcaption class="muted">Architecture</figcaption>
+    </figure>
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .lede {
+    font-size: 1.15rem;
+    color: var(--muted);
+  }
+  .meta {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1.25rem 0 2rem;
+  }
+  .links {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .diagram {
+    margin: 0 0 2rem;
+  }
+  .diagram :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .diagram figcaption {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+  .prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.25rem;
+  }
+</style>

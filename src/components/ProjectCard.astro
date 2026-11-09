@@ -1,0 +1,54 @@
+---
+import type { DevopsProject } from '../lib/projects';
+import { formatDate } from '../lib/projects';
+import Tags from './Tags.astro';
+
+interface Props {
+  project: DevopsProject;
+  headingLevel?: 'h2' | 'h3';
+}
+const { project, headingLevel: H = 'h3' } = Astro.props;
+const { title, summary, tools, date } = project.data;
+---
+
+<li class="card project-card">
+  <H class="card-title"><a href={`/projects/${project.id}/`}>{title}</a></H>
+  <p>{summary}</p>
+  <Tags tools={tools} />
+  <p class="muted date"><time datetime={date.toISOString()}>{formatDate(date)}</time></p>
+</li>
+
+<style>
+  .project-card {
+    position: relative;
+  }
+  .card-title {
+    font-size: 1.05rem;
+  }
+  .card-title a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  /* Whole card is clickable, but the link text stays the accessible name. */
+  .card-title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+  }
+  .project-card:hover {
+    border-color: var(--accent);
+  }
+  .project-card:has(a:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .card-title a:focus-visible {
+    outline: none;
+  }
+  .date {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    margin-top: auto;
+  }
+</style>

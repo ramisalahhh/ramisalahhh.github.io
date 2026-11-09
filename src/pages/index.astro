@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Tags from '../components/Tags.astro';
+import Text from '../components/Text.astro';
+import site from '../data/site.json';
+import services from '../data/services.json';
+import { getFeaturedProjects, getSkills, MAX_FEATURED } from '../lib/projects';
+
+const featured = await getFeaturedProjects();
+const skills = await getSkills();
+const emptySlots = MAX_FEATURED - featured.length;
+---
+
+<Base>
+  <section class="container hero">
+    <p class="eyebrow">{site.name}</p>
+    <h1>{site.headline}</h1>
+    <div class="buttons">
+      <a class="button primary" href="/projects/">Projects</a>
+      <a class="button secondary" href="/contact/">Contact</a>
+    </div>
+  </section>
+
+  <section class="container section" aria-labelledby="featured-heading">
+    <h2 id="featured-heading">Featured projects</h2>
+    <ul class="grid">
+      {featured.map((p) => <ProjectCard project={p} />)}
+      {
+        Array.from({ length: emptySlots }).map(() => (
+          <li class="card">
+            <p class="todo">TODO: set "featured: true" on a devops project to fill this slot.</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="container section" aria-labelledby="skills-heading">
+    <h2 id="skills-heading">Skills</h2>
+    <p class="muted small">Every tool here is used in at least one project on this site.</p>
+    <dl class="skills">
+      {
+        skills.map(({ group, tools }) => (
+          <div class="skill-row">
+            <dt>{group}</dt>
+            <dd>
+              <Tags tools={tools} label={group} />
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section class="container section" aria-labelledby="services-heading">
+    <h2 id="services-heading">What I can do for you</h2>
+    <ul class="grid">
+      {
+        services.map((s) => (
+          <li class="card">
+            <h3>{s.title}</h3>
+            <Text value={s.text} as="p" />
+          </li>
+        ))
+      }
+    </ul>
+    <p class="cta"><a href="/contact/">Get in touch →</a></p>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-top: 3.5rem;
+    padding-bottom: 1.5rem;
+  }
+  .hero h1 {
+    max-width: 22ch;
+    margin-bottom: 1.5rem;
+  }
+  .small {
+    font-size: 0.95rem;
+  }
+  .skills {
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .skill-row {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    gap: 0.5rem 1rem;
+    align-items: baseline;
+  }
+  .skill-row dt {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .skill-row dd {
+    margin: 0;
+  }
+  @media (max-width: 36rem) {
+    .skill-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  .cta {
+    margin-top: 1.25rem;
+    font-family: var(--mono);
+  }
+</style>

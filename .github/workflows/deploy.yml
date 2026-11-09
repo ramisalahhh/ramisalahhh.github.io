@@ -1,0 +1,45 @@
+name: Deploy
+
+# Push to main: build and deploy to GitHub Pages.
+# Pull request: build only, so a broken page never reaches main.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; a newer push waits instead of cancelling a running deploy.
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Installs dependencies, runs `astro build` and uploads dist/ as the Pages artifact.
+      - name: Install and build
+        uses: withastro/action@v6
+        with:
+          node-version: 24
+
+  deploy:
+    # The S3 + CloudFront migration only needs to replace this job.
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
